@@ -1,40 +1,39 @@
-import React from 'react'
-import { Container,Table } from 'react-bootstrap'
+import React, { useEffect, useState } from "react";
+import { Container, Table } from "react-bootstrap";
 
 export default function TableData() {
-  return (
-   
-    <div >
+  const [data, setData] = useState([]);
 
-        <Container> <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td colSpan={2}>Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </Table></Container>
-    </div>
-  )
+  // let person = data[`2022-08-19 04:45:00`];
+ 
+  useEffect(() => {
+    fetch(
+      `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        let dataV1=data[`Time Series (5min)`];
+        let datav2=dataV1[`2022-08-19 04:45:00`];
+        let arr=[datav2]
+        setData(arr);
+      });
+  }, []);
+
+//   console.log(person[]);
+
+  //  console.log(person)
+    console.log(data["2022-08-19 04:45:00"])
+
+  
+  return (
+    <>
+    {
+      data.forEach((crr,index,arr)=>{
+        // console.log(crr['1. open']);
+        <h2>{crr['1. open']}</h2>
+      })
+    }
+      <h2>hello</h2>
+    </>
+  );
 }
